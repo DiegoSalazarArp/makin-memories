@@ -12,9 +12,13 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { login } from "../auth/actions"
 
-export default async function Page() {
+export default async function Page({
+  searchParams,
+}: {
+  searchParams: { message: string }
+}) {
   return (
-    <div className="animate-in h-screen w-full grid place-content-center">
+    <div className="animate-in h-screen w-full grid place-content-center gap-5  ">
       <Card className="mx-auto max-w-sm">
         <CardHeader>
           <CardTitle className="text-2xl">Login</CardTitle>
@@ -55,13 +59,18 @@ export default async function Page() {
             </div>
             <div className="mt-4 text-center text-sm">
               Don&apos;t have an account?{" "}
-              <Link href="#" className="underline">
+              <Link href="/sign-in" className="underline">
                 Sign up
               </Link>
             </div>
           </form>
         </CardContent>
       </Card>
+      {searchParams?.message && (
+        <div className="bg-red-500 p-4 rounded-sm text-white mx-auto">
+          <p>{searchParams.message}</p>
+        </div>
+      )}
     </div>
   )
 }

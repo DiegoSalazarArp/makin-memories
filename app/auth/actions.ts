@@ -28,6 +28,8 @@ export async function login(formData: FormData) {
  */
 export async function singUp(formData: FormData) {
   const data = {
+    name: formData.get("name") as string,
+    lastName: formData.get("lastName") as string,
     email: formData.get("email") as string,
     password: formData.get("password") as string,
   }
@@ -44,9 +46,9 @@ export async function singUp(formData: FormData) {
   })
 
   if (error) {
-    redirect(`/loginServer?message=${error.message}`)
+    redirect(`/login?message=${error.message}`)
   }
-  redirect("/loginServer?message=Check email to continue sign in process")
+  redirect("/login?message=Check email to continue sign in process")
 }
 
 /**
