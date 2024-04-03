@@ -29,12 +29,12 @@ export async function login(formData: FormData) {
 export async function singUp(formData: FormData) {
   const data = {
     name: formData.get("name") as string,
-    lastName: formData.get("lastName") as string,
+    username: formData.get("username") as string,
     email: formData.get("email") as string,
     password: formData.get("password") as string,
   }
 
-  const { email, password } = data
+  const { email, password, name, username } = data
 
   const supabase = createServerActionClient({ cookies })
   const { error } = await supabase.auth.signUp({

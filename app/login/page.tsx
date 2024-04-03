@@ -59,7 +59,7 @@ export default async function Page({
             </div>
             <div className="mt-4 text-center text-sm">
               Don&apos;t have an account?{" "}
-              <Link href="/sign-in" className="underline">
+              <Link href="/sign-up" className="underline">
                 Sign up
               </Link>
             </div>
