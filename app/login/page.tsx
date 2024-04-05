@@ -11,6 +11,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { login } from "../auth/actions"
+import { AuthGithubServer } from "@/components/auth/github-button-server"
 
 export default async function Page({
   searchParams,
@@ -53,9 +54,7 @@ export default async function Page({
               <Button formAction={login} type="submit" className="w-full">
                 Login
               </Button>
-              <Button variant="outline" className="w-full">
-                Login with Google
-              </Button>
+              <AuthGithubServer title="Sign up with Github" />
             </div>
             <div className="mt-4 text-center text-sm">
               Don&apos;t have an account?{" "}

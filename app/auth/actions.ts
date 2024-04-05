@@ -46,9 +46,9 @@ export async function singUp(formData: FormData) {
   })
 
   if (error) {
-    redirect(`/login?message=${error.message}`)
+    redirect(`/sign-up?message=${error.message}`)
   }
-  redirect("/login?message=Check email to continue sign in process")
+  redirect("/sign-up?message=Check email to continue sign in process")
 }
 
 /**

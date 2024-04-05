@@ -32,7 +32,7 @@ export default async function Page({
             <div className="grid gap-4">
               <div className="grid grid-cols-2 gap-4">
                 <div className="grid gap-2">
-                  <Label htmlFor="first-name">Name</Label>
+                  <Label htmlFor="name">Name</Label>
                   <Input name="name" placeholder="Max" required />
                 </div>
                 <div className="grid gap-2">
@@ -51,7 +51,7 @@ export default async function Page({
               </div>
               <div className="grid gap-2">
                 <Label htmlFor="password">Password</Label>
-                <Input name="" type="password" />
+                <Input name="password" type="password" />
               </div>
               <Button formAction={singUp} className="w-full">
                 Create an account
@@ -59,7 +59,7 @@ export default async function Page({
             </div>
           </form>
           <div className="my-4">
-            <AuthGithubServer />
+            <AuthGithubServer title="Sign up with Github" />
           </div>
           <div className="mt-4 text-center text-sm">
             Already have an account?{" "}
