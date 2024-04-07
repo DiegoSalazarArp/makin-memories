@@ -9,7 +9,6 @@ import {
   Package,
   Package2,
   ScrollText,
-  Search,
   ShoppingCart,
   Users,
 } from "lucide-react"
@@ -31,17 +30,27 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Input } from "@/components/ui/input"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { signOut } from "../auth/actions"
 import { ModeToggle } from "@/components/ModeToggle"
-
+import { createServerComponentClient } from "@supabase/auth-helpers-nextjs"
+import { cookies } from "next/headers"
+import { redirect } from "next/navigation"
 type DashboardLayoutProps = {
   children: React.ReactNode
 }
 export default async function DashboardLayout({
   children,
 }: DashboardLayoutProps) {
+  const supabase = createServerComponentClient({ cookies })
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
+  if (!user) {
+    redirect("/login")
+  }
+
   return (
     <div className="animate-in grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
       <div className="hidden border-r bg-muted/40 md:block">
@@ -71,9 +80,6 @@ export default async function DashboardLayout({
               >
                 <NotebookPen className="h-4 w-4" />
                 Create a note
-                {/* <Badge className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
-                  6
-                </Badge> */}
               </Link>
               <Link
                 href="/dashboard/list"
@@ -181,18 +187,8 @@ export default async function DashboardLayout({
               </div>
             </SheetContent>
           </Sheet>
-          <div className="w-full flex-1">
-            <form>
-              <div className="relative">
-                <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                <Input
-                  type="search"
-                  placeholder="Search products..."
-                  className="w-full appearance-none bg-background pl-8 shadow-none md:w-2/3 lg:w-1/3"
-                />
-              </div>
-            </form>
-          </div>
+          <div className="w-full flex-1 items-center"></div>
+          <div>Hey! {user.email}</div>
           <div>
             <ModeToggle />
           </div>

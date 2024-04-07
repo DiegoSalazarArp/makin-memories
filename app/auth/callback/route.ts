@@ -15,8 +15,7 @@ export async function GET(request: Request) {
     await supabase.auth.exchangeCodeForSession(code)
   }
 
-  console.log("Redirecting to /dashboard")
 
   // URL to redirect to after sign up process completes
-  return NextResponse.redirect(`${origin}/`)
+  return NextResponse.redirect(`${origin}/dashboard`)
 }

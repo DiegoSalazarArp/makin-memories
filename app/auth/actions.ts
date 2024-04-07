@@ -1,5 +1,7 @@
 "use server"
+import { FormDataSchema } from "@/lib/schema"
 import { createServerActionClient } from "@supabase/auth-helpers-nextjs"
+import { revalidatePath } from "next/cache"
 import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
 
@@ -7,19 +9,31 @@ import { redirect } from "next/navigation"
  * Logs in a user with the provided form data.
  * @param formData - The form data containing the user's email and password.
  */
-export async function login(formData: FormData) {
-  const data = {
-    email: formData.get("email") as string,
-    password: formData.get("password") as string,
+export async function login(state: any, formData: FormData) {
+  const result = FormDataSchema.safeParse({
+    email: formData.get("email"),
+    password: formData.get("password"),
+  })
+
+  if (!result.success) {
+    return { message: "Invalid form data", status: 400 }
   }
+
+  const data = result.data
 
   const supabase = createServerActionClient({ cookies })
-  const { error } = await supabase.auth.signInWithPassword(data)
+
+  const { error } = await supabase.auth.signInWithPassword({
+    email: data.email,
+    password: data.password,
+  })
 
   if (error) {
+    // fix here
     redirect("/error")
   }
-  redirect("/dashboard")
+
+  return redirect("/dashboard")
 }
 
 /**
@@ -27,14 +41,8 @@ export async function login(formData: FormData) {
  * @param formData - The form data containing the user's email and password.
  */
 export async function singUp(formData: FormData) {
-  const data = {
-    name: formData.get("name") as string,
-    username: formData.get("username") as string,
-    email: formData.get("email") as string,
-    password: formData.get("password") as string,
-  }
-
-  const { email, password, name, username } = data
+  const email = formData.get("email") as string
+  const password = formData.get("password") as string
 
   const supabase = createServerActionClient({ cookies })
   const { error } = await supabase.auth.signUp({
@@ -46,9 +54,9 @@ export async function singUp(formData: FormData) {
   })
 
   if (error) {
-    redirect(`/sign-up?message=${error.message}`)
+    return redirect(`/sign-up?message=${error.message}`)
   }
-  redirect("/sign-up?message=Check email to continue sign in process")
+  return redirect("/sign-up?message=Check email to continue sign in process")
 }
 
 /**
