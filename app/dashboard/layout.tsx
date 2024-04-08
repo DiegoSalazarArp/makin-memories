@@ -123,51 +123,52 @@ export default async function DashboardLayout({
             </SheetTrigger>
             <SheetContent side="left" className="flex flex-col">
               <nav className="grid gap-2 text-lg font-medium">
-                <Link
+                {/* <a
                   href="#"
                   className="flex items-center gap-2 text-lg font-semibold"
                 >
                   <Package2 className="h-6 w-6" />
                   <span className="sr-only">Acme Inc</span>
-                </Link>
-                <Link
-                  href="#"
+                </a> */}
+                <p className="text-sm">Hey! {user.email}</p>
+                <a
+                  href="/dashboard"
                   className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
                 >
                   <Home className="h-5 w-5" />
                   Dashboard
-                </Link>
-                <Link
-                  href="#"
+                </a>
+                <a
+                  href="/dashboard/create"
                   className="mx-[-0.65rem] flex items-center gap-4 rounded-xl bg-muted px-3 py-2 text-foreground hover:text-foreground"
                 >
                   <ShoppingCart className="h-5 w-5" />
-                  Orders
+                  Create a note
                   <Badge className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
                     6
                   </Badge>
-                </Link>
-                <Link
+                </a>
+                <a
                   href="#"
                   className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
                 >
                   <Package className="h-5 w-5" />
                   Products
-                </Link>
-                <Link
+                </a>
+                <a
                   href="#"
                   className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
                 >
                   <Users className="h-5 w-5" />
                   Customers
-                </Link>
-                <Link
+                </a>
+                <a
                   href="#"
                   className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
                 >
                   <LineChart className="h-5 w-5" />
                   Analytics
-                </Link>
+                </a>
               </nav>
               <div className="mt-auto">
                 <Card>
@@ -188,7 +189,7 @@ export default async function DashboardLayout({
             </SheetContent>
           </Sheet>
           <div className="w-full flex-1 items-center"></div>
-          <div>Hey! {user.email}</div>
+          <div className="hidden lg:block">Hey! {user.email}</div>
           <div>
             <ModeToggle />
           </div>

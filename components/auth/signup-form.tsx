@@ -1,6 +1,6 @@
-import Link from "next/link"
+"use client"
 
-import { Button } from "@/components/ui/button"
+import Link from "next/link"
 import {
   Card,
   CardContent,
@@ -13,12 +13,15 @@ import { Label } from "@/components/ui/label"
 import { singUp } from "@/app/auth/actions"
 import { AuthGithubServer } from "@/components/auth/github-button-server"
 import SubmitButton from "./submit-button"
+import { useFormState } from "react-dom"
 
 export default function SignUpForm({
   searchParams,
 }: {
   searchParams: { message: string }
 }) {
+  const [_, formAction] = useFormState(singUp, {})
+
   return (
     <div className="animate-in h-screen w-full grid place-content-center gap-5  ">
       <Card className="mx-auto max-w-sm">
@@ -29,7 +32,7 @@ export default function SignUpForm({
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form action={singUp}>
+          <form action={formAction}>
             <div className="grid gap-4">
               <div className="grid grid-cols-2 gap-4"></div>
               <div className="grid gap-2">
@@ -45,12 +48,7 @@ export default function SignUpForm({
                 <Label htmlFor="password">Password</Label>
                 <Input name="password" type="password" />
               </div>
-
               <SubmitButton title="Create an account" />
-              {/* 
-              <Button formAction={singUp} className="w-full">
-                Create an account
-              </Button> */}
             </div>
           </form>
           <div className="my-4">

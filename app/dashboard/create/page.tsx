@@ -1,3 +1,5 @@
+import CreateNote from "@/components/notes/CreateNote"
+
 export default function Page() {
-  return <div>dashboard create</div>
+  return <CreateNote />
 }

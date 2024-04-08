@@ -1,62 +1,84 @@
 "use server"
 import { FormDataSchema } from "@/lib/schema"
 import { createServerActionClient } from "@supabase/auth-helpers-nextjs"
-import { revalidatePath } from "next/cache"
 import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
 
 /**
- * Logs in a user with the provided form data.
+ * Logs in the user with the provided form data.
+ *
+ * @param prevState - The previous state of the application.
  * @param formData - The form data containing the user's email and password.
+ * @returns A Promise that resolves to a redirect to the dashboard page.
+ * @throws If there is an error during the login process.
  */
-export async function login(state: any, formData: FormData) {
+export async function login(prevState: any, formData: FormData) {
   const result = FormDataSchema.safeParse({
     email: formData.get("email"),
     password: formData.get("password"),
   })
 
   if (!result.success) {
-    return { message: "Invalid form data", status: 400 }
+    redirect("/login?message=" + result.error.errors[0].message)
   }
 
   const data = result.data
 
-  const supabase = createServerActionClient({ cookies })
+  try {
+    const supabase = createServerActionClient({ cookies })
 
-  const { error } = await supabase.auth.signInWithPassword({
-    email: data.email,
-    password: data.password,
-  })
+    const { error } = await supabase.auth.signInWithPassword({
+      email: data.email,
+      password: data.password,
+    })
 
-  if (error) {
-    // fix here
-    redirect("/error")
+    if (error) {
+      redirect(`/login?message=${error.message}`)
+    }
+
+    return redirect("/dashboard")
+  } catch (error) {
+    throw error
   }
-
-  return redirect("/dashboard")
 }
 
 /**
- * Signs up a user with the provided form data.
+ * Signs up the user with the provided form data.
+ *
+ * @param prevState - The previous state of the application.
  * @param formData - The form data containing the user's email and password.
+ * @returns A Promise that resolves to a redirect to the sign-up page.
+ * @throws If there is an error during the sign-up process.
  */
-export async function singUp(formData: FormData) {
-  const email = formData.get("email") as string
-  const password = formData.get("password") as string
-
-  const supabase = createServerActionClient({ cookies })
-  const { error } = await supabase.auth.signUp({
-    email,
-    password,
-    options: {
-      emailRedirectTo: `http://localhost:3000/auth/callback`,
-    },
+export async function singUp(prevState: any, formData: FormData) {
+  const result = FormDataSchema.safeParse({
+    email: formData.get("email"),
+    password: formData.get("password"),
   })
 
-  if (error) {
-    return redirect(`/sign-up?message=${error.message}`)
+  if (!result.success) {
+    redirect("/login?message=" + result.error.errors[0].message)
   }
-  return redirect("/sign-up?message=Check email to continue sign in process")
+
+  const data = result.data
+
+  try {
+    const supabase = createServerActionClient({ cookies })
+    const { error } = await supabase.auth.signUp({
+      email: data.email,
+      password: data.password,
+      options: {
+        emailRedirectTo: `http://localhost:3000/auth/callback`,
+      },
+    })
+
+    if (error) {
+      return redirect(`/sign-up?message=${error.message}`)
+    }
+    return redirect("/sign-up?message=Check email to continue sign in process")
+  } catch (error) {
+    throw error
+  }
 }
 
 /**
