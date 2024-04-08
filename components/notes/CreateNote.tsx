@@ -1,10 +1,15 @@
-import { Button } from "../ui/button"
+"use client"
 
+import { useFormState } from "react-dom"
+import { Button } from "../ui/button"
 import { Input } from "../ui/input"
 import { Label } from "../ui/label"
 import { Textarea } from "@/components/ui/textarea"
+import { createNoteActions } from "@/app/(notes)/actions"
 
 export default function CreateNote() {
+  const [_, formAction] = useFormState(createNoteActions, null)
+
   return (
     <main className="animate-in flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
       <div className="flex items-center mb-10">
@@ -14,7 +19,7 @@ export default function CreateNote() {
       </div>
 
       <div className="relative flex-col items-start gap-8 flex">
-        <form className="grid w-full items-start gap-6">
+        <form action={formAction} className="grid w-full items-start gap-6">
           <fieldset className="grid gap-6 rounded-lg border p-4">
             <legend className="-ml-1 px-1 text-sm font-medium">Note</legend>
             <div className="grid gap-3">
@@ -28,12 +33,17 @@ export default function CreateNote() {
             </div>
             <div className="grid gap-3">
               <Label htmlFor="temperature">Subject</Label>
-              <Input id="subject" type="string" placeholder="e.g title" />
+              <Input
+                id="subject"
+                name="subject"
+                type="string"
+                placeholder="e.g title"
+              />
             </div>
 
             <div className="grid gap-3">
               <Label htmlFor="top-p">Date</Label>
-              <Input id="dispatch_date" type="date" />
+              <Input id="dispatch_date" name="dispatch_date" type="date" />
             </div>
           </fieldset>
           <fieldset className="grid gap-6 rounded-lg border p-4">
