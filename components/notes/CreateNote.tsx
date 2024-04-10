@@ -1,14 +1,26 @@
 "use client"
 
-import { useFormState } from "react-dom"
-import { Button } from "../ui/button"
 import { Input } from "../ui/input"
 import { Label } from "../ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { createNoteActions } from "@/app/(notes)/actions"
+import { toast } from "sonner"
+import SubmitButton from "../auth/submit-button"
+import { useRef } from "react"
 
+toast
 export default function CreateNote() {
-  const [_, formAction] = useFormState(createNoteActions, null)
+  const formRef = useRef<HTMLFormElement>(null)
+
+  async function ClientAction(formData: FormData) {
+    const result = await createNoteActions(null, formData)
+    if (result?.ok) {
+      toast.success(result.ok)
+      formRef.current?.reset()
+    } else {
+      toast.error(result?.error)
+    }
+  }
 
   return (
     <main className="animate-in flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
@@ -19,7 +31,11 @@ export default function CreateNote() {
       </div>
 
       <div className="relative flex-col items-start gap-8 flex">
-        <form action={formAction} className="grid w-full items-start gap-6">
+        <form
+          ref={formRef}
+          action={ClientAction}
+          className="grid w-full items-start gap-6"
+        >
           <fieldset className="grid gap-6 rounded-lg border p-4">
             <legend className="-ml-1 px-1 text-sm font-medium">Note</legend>
             <div className="grid gap-3">
@@ -61,9 +77,7 @@ export default function CreateNote() {
               />
             </div>
             <div>
-              <Button type="submit" variant={"outline"} className="w-full">
-                Send
-              </Button>
+              <SubmitButton title="Send" />
             </div>
           </fieldset>
         </form>

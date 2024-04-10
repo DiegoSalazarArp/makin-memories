@@ -6,8 +6,7 @@ import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
 
 export async function createNoteActions(prevState: any, formData: FormData) {
-  console.log(formData)
-
+  // parse form data with schema
   const result = CreateNoteSchema.safeParse({
     email_to: formData.get("email_to"),
     subject: formData.get("subject"),
@@ -15,16 +14,21 @@ export async function createNoteActions(prevState: any, formData: FormData) {
     content: formData.get("content"),
   })
 
+  // form validation
   if (!result.success) {
-    console.log("error:", result)
-    return
-  }
+    const errors = result.error.issues
+      .map((issue) => ` ${issue.message}`)
+      .join(", ")
 
+    return {
+      ok: null,
+      error: errors,
+    }
+  }
   const data = result.data
 
   try {
     const supabase = createServerActionClient({ cookies })
-
     const {
       data: { user },
     } = await supabase.auth.getUser()
@@ -39,12 +43,19 @@ export async function createNoteActions(prevState: any, formData: FormData) {
       user_id: user.id,
     })
 
-    console.log(result)
-
-    if (result.error !== null) {
-      console.log("error supabase:", result.error)
+    return result.error === null
+      ? {
+          ok: "Note created successfully",
+          error: null,
+        }
+      : {
+          ok: null,
+          error: result.error.message,
+        }
+  } catch (e: any) {
+    return {
+      ok: null,
+      error: e.toString(),
     }
-  } catch (error) {
-    console.log("catch error:", error)
   }
 }
