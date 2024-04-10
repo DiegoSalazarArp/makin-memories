@@ -16,7 +16,7 @@ export default function SubmitButton({ title }: SubmitButtonProps) {
       {pending ? (
         <div className="flex gap-2 items-center">
           <div>
-            <CircleDashed className="animate-spin animate-infinite" />
+            <CircleDashed className="w-4 h-4 animate-spin animate-infinite" />
           </div>
           <div>
             <p>Please wait...</p>
