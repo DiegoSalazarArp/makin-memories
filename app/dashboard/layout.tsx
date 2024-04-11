@@ -36,9 +36,11 @@ import { ModeToggle } from "@/components/ModeToggle"
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs"
 import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
+
 type DashboardLayoutProps = {
   children: React.ReactNode
 }
+
 export default async function DashboardLayout({
   children,
 }: DashboardLayoutProps) {
@@ -123,13 +125,6 @@ export default async function DashboardLayout({
             </SheetTrigger>
             <SheetContent side="left" className="flex flex-col">
               <nav className="grid gap-2 text-lg font-medium">
-                {/* <a
-                  href="#"
-                  className="flex items-center gap-2 text-lg font-semibold"
-                >
-                  <Package2 className="h-6 w-6" />
-                  <span className="sr-only">Acme Inc</span>
-                </a> */}
                 <p className="text-sm">Hey! {user.email}</p>
                 <a
                   href="/dashboard"
