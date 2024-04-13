@@ -1,4 +1,4 @@
-import { MoreHorizontal } from "lucide-react"
+import { Eye, EyeOff, MoreHorizontal } from "lucide-react"
 
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -41,6 +41,13 @@ export default async function MyList() {
   }
   const { data: todos } = await supabase.from("todos").select("*")
 
+  const formatDate = (dateString: Date) => {
+    const date = new Date(dateString)
+    return date.toLocaleDateString("en-CA") // 'en-CA' usa el formato yyyy-MM-dd
+  }
+
+  console.log(todos)
+
   return (
     <Suspense fallback={<SkeletonList />}>
       <main className="animate-in flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
@@ -52,24 +59,20 @@ export default async function MyList() {
         <div>
           <Card>
             <CardHeader>
-              <CardTitle>Products</CardTitle>
-              <CardDescription>
-                Manage your products and view their sales performance.
-              </CardDescription>
+              <CardTitle>Notes</CardTitle>
+              <CardDescription>Manage your notes.</CardDescription>
             </CardHeader>
             <CardContent>
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Title</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Price</TableHead>
+                    <TableHead>Subject</TableHead>
+                    <TableHead>Watch</TableHead>
+                    <TableHead>Email to</TableHead>
                     <TableHead className="hidden md:table-cell">
-                      Total Sales
+                      Dispatch date
                     </TableHead>
-                    <TableHead className="hidden md:table-cell">
-                      Created at
-                    </TableHead>
+
                     <TableHead>
                       <span className="sr-only">Actions</span>
                     </TableHead>
@@ -78,17 +81,23 @@ export default async function MyList() {
                 <TableBody>
                   {todos!.map((todo: any) => (
                     <TableRow key={todo.id}>
-                      <TableCell className="font-medium">
-                        {todo.subject}
+                      <TableCell className="font-medium line-clamp-1">
+                        <span className="truncate">{todo.subject}</span>
                       </TableCell>
                       <TableCell>
-                        <Badge variant="outline">Draft</Badge>
+                        <Badge variant="outline">
+                          {todo.seen ? (
+                            <Eye className="text-green-400" />
+                          ) : (
+                            <EyeOff className="text-red-400" />
+                          )}
+                        </Badge>
                       </TableCell>
-                      <TableCell>$499.99</TableCell>
-                      <TableCell className="hidden md:table-cell">25</TableCell>
+                      <TableCell>{todo.email_to}</TableCell>
                       <TableCell className="hidden md:table-cell">
-                        2023-07-12 10:42 AM
+                        {formatDate(todo.dispatch_date)}
                       </TableCell>
+
                       <TableCell>
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
