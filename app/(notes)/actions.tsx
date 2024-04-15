@@ -44,6 +44,8 @@ export async function createNoteActions(prevState: any, formData: FormData) {
       user_id: user.id,
     })
 
+    revalidatePath("/dashboard/list")
+
     return result.error === null
       ? {
           ok: "Note created successfully",
@@ -73,8 +75,6 @@ export async function deleteNoteActions(formData: FormData) {
     if (user === null) return
 
     const result = await supabase.from("todos").delete().eq("id", id)
-
-    console.log(result)
 
     revalidatePath("/dashboard/list")
   } catch (e: any) {

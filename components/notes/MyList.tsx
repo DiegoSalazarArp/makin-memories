@@ -32,6 +32,7 @@ import {
 } from "@supabase/auth-helpers-nextjs"
 import SubmitButton from "../auth/submit-button"
 import { deleteNoteActions } from "@/app/(notes)/actions"
+import { SheetDemo } from "../SheetDemo"
 
 export default async function MyList() {
   const supabase = createServerComponentClient({ cookies })
@@ -73,7 +74,7 @@ export default async function MyList() {
                   <TableHead className="hidden md:table-cell">
                     Dispatch date
                   </TableHead>
-
+                  <TableHead>Edit</TableHead>
                   <TableHead>
                     <span className="sr-only">Actions</span>
                   </TableHead>
@@ -98,6 +99,9 @@ export default async function MyList() {
                     <TableCell className="hidden md:table-cell">
                       {formatDate(todo.dispatch_date)}
                     </TableCell>
+                    <TableCell>
+                      <SheetDemo id={todo.id} />
+                    </TableCell>
 
                     <TableCell>
                       <DropdownMenu>
@@ -112,14 +116,17 @@ export default async function MyList() {
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
-                          <form action={deleteNoteActions}>
+                          <form>
                             <input type="hidden" name="id" value={todo.id} />
 
                             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                            <DropdownMenuItem>Edit</DropdownMenuItem>
                             <DropdownMenuItem>
-                              <Button variant="ghost" size="sm">
-                                Eliminar
+                              <Button
+                                formAction={deleteNoteActions}
+                                variant="destructive"
+                                size="sm"
+                              >
+                                Delete
                               </Button>
                             </DropdownMenuItem>
                           </form>
