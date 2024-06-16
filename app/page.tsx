@@ -11,7 +11,7 @@ export default function Home() {
         <ModeToggle />
       </div>
       <div className="space-y-4 text-center">
-        <h1 className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
+        <h1 className="text-4xl  tracking-tight sm:text-5xl md:text-6xl">
           makin memories
         </h1>
         <p className="text-lg text-gray-500 dark:text-gray-400">are you in?</p>
