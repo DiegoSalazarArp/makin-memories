@@ -15,10 +15,30 @@ Deno.serve(async (req: Request) => {
     });
   }
 
-  return new Response(JSON.stringify({ todos }), {
-    headers: { "Content-Type": "application/json" },
-    status: 200,
-  });
+  for (const todo of todos) {
+    const res = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${Deno.env.get("RESEND_API_KEY")}`,
+      },
+      body: JSON.stringify({
+        from: "onboarding@resend.dev",
+        to: todo.email_to,
+        subject: todo.subject,
+        text: todo.subject,
+      }),
+    });
+
+    const data = await res.json();
+
+    console.log(data);
+
+    return new Response(JSON.stringify({ data }), {
+      headers: { "Content-Type": "application/json" },
+      status: 200,
+    });
+  }
 });
 
 // Deno.serve(async (req: Request) => {
