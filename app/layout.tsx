@@ -6,7 +6,7 @@ import { Toaster } from "sonner"
 
 export const metadata: Metadata = {
   title: "Makin memories",
-  description: "An app to help you remember the good times",
+  description: "your last message",
 }
 
 export default function RootLayout({

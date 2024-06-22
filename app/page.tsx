@@ -12,7 +12,7 @@ export default function Home() {
       </div>
       <div className="space-y-4 text-center">
         <h1 className="text-4xl  tracking-tight sm:text-5xl md:text-6xl">
-          makin memories
+          we die young
         </h1>
         <p className="text-lg text-gray-500 dark:text-gray-400">are you in?</p>
         <Link
