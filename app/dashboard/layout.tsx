@@ -36,6 +36,7 @@ import { ModeToggle } from "@/components/ModeToggle"
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs"
 import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
+import BannerTitle from "@/components/ui/BannerTitle"
 
 type DashboardLayoutProps = {
   children: React.ReactNode
@@ -126,6 +127,9 @@ export default async function DashboardLayout({
             <SheetContent side="left" className="flex flex-col">
               <nav className="grid gap-2 text-lg font-medium">
                 <p className="text-sm">Hey! {user.email}</p>
+
+                {/* <BannerTitle className="text-3xl" title="we die young" /> */}
+
                 <a
                   href="/dashboard"
                   className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"

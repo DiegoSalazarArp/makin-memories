@@ -1,4 +1,4 @@
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2.43.5";
+import { createClient } from "npm:@supabase/supabase-js@2.43.5";
 
 Deno.serve(async (req: Request) => {
   const supabaseClient = createClient(
