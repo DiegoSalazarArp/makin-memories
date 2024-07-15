@@ -37,17 +37,15 @@ import { SheetDemo } from "../SheetDemo"
 export default async function MyList() {
   const supabase = createServerComponentClient({ cookies })
 
-  // await new Promise((resolve) => setTimeout(resolve, 1000))
-
   const { data: user } = await supabase.auth.getUser()
   if (!user) {
     return null
   }
   const { data: todos } = await supabase.from("todos").select("*")
 
-  const formatDate = (dateString: Date) => {
+  const formatDateForInput = (dateString: string) => {
     const date = new Date(dateString)
-    return date.toLocaleDateString("en-CA") // 'en-CA' usa el formato yyyy-MM-dd
+    return date.toISOString().split("T")[0] // Formato yyyy-MM-dd
   }
 
   return (
@@ -97,7 +95,7 @@ export default async function MyList() {
                     </TableCell>
                     <TableCell>{todo.email_to}</TableCell>
                     <TableCell className="hidden md:table-cell">
-                      {formatDate(todo.dispatch_date)}
+                      {formatDateForInput(todo.dispatch_date)}
                     </TableCell>
                     <TableCell>
                       <SheetDemo id={todo.id} />

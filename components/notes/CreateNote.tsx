@@ -8,7 +8,6 @@ import { toast } from "sonner"
 import SubmitButton from "../auth/submit-button"
 import { useRef } from "react"
 
-toast
 export default function CreateNote() {
   const formRef = useRef<HTMLFormElement>(null)
 

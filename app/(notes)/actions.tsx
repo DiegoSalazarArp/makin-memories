@@ -6,6 +6,16 @@ import { revalidatePath } from "next/cache"
 import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
 
+export async function updateNoteActions(prevState: any, formData: FormData) {
+  const result = CreateNoteSchema.safeParse({
+    email_to: formData.get("email_to"),
+    id: formData.get("id"),
+    dispatch_date: formData.get("dispatch_date"),
+    content: formData.get("content"),
+  })
+  console.log(result)
+}
+
 export async function createNoteActions(prevState: any, formData: FormData) {
   // parse form data with schema
   const result = CreateNoteSchema.safeParse({
